@@ -1,2 +1,2 @@
-Trabalho de conclusão de curso do curso de Data Analytics da FIAP
+Trabalho de conclusão de curso - Data Analytics / FIAP
 ** Datathon **
