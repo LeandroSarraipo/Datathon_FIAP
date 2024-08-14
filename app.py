@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+import statistics
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -580,14 +580,11 @@ with guia1:
             ################################################
             
             with guia4:
-                
                 st.header('Modelo Preditivo')
-                
                 st.markdown('<hr style="border-top: 2px solid blue;">', unsafe_allow_html=True)
-                
+
                 # Subtítulo da aplicação
                 st.subheader('Regressão Linear')
-                
                 st.markdown('')
 
                 # Selecionar features e target para Regressão Linear
@@ -599,10 +596,10 @@ with guia1:
                 model_lr = LinearRegression()
                 kf = KFold(n_splits=5, shuffle=True, random_state=42)
                 mse_scores_lr = cross_val_score(model_lr, features_2020_2021, target_2022, cv=kf, scoring='neg_mean_squared_error')
-                mse_scores_lr = -mse_scores_lr
+                mse_scores_lr = [-score for score in mse_scores_lr]
 
-                st.write(f'Média do Erro Quadrático Médio (MSE) - Regressão Linear: {np.mean(mse_scores_lr)}')
-                st.write(f'Desvio Padrão do MSE - Regressão Linear: {np.std(mse_scores_lr)}')
+                st.write(f'Média do Erro Quadrático Médio (MSE) - Regressão Linear: {statistics.mean(mse_scores_lr)}')
+                st.write(f'Desvio Padrão do MSE - Regressão Linear: {statistics.stdev(mse_scores_lr)}')
                 
                 st.markdown('')
 
@@ -628,19 +625,17 @@ with guia1:
                 st.write(tabela_previsoes_lr)
                 
                 st.markdown('<hr style="border-top: 2px solid blue;">', unsafe_allow_html=True)
-                
 
                 st.subheader('Random Forest')
-                
                 st.markdown('')
                 
                 # Configurar e validar o modelo Random Forest
                 model_rf = RandomForestRegressor(n_estimators=100, random_state=42)
                 mse_scores_rf = cross_val_score(model_rf, features_2020_2021, target_2022, cv=kf, scoring='neg_mean_squared_error')
-                mse_scores_rf = -mse_scores_rf
+                mse_scores_rf = [-score for score in mse_scores_rf]
 
-                st.write(f'Média do Erro Quadrático Médio (MSE) - Random Forest: {np.mean(mse_scores_rf)}')
-                st.write(f'Desvio Padrão do MSE - Random Forest: {np.std(mse_scores_rf)}')
+                st.write(f'Média do Erro Quadrático Médio (MSE) - Random Forest: {statistics.mean(mse_scores_rf)}')
+                st.write(f'Desvio Padrão do MSE - Random Forest: {statistics.stdev(mse_scores_rf)}')
                 
                 st.markdown('')
 
@@ -661,8 +656,8 @@ with guia1:
                 
                 # Dados dos resultados
                 models = ['Regressão Linear', 'Random Forest']
-                mse_means = [np.mean(mse_scores_lr), np.mean(mse_scores_rf)]
-                mse_stds = [np.std(mse_scores_lr), np.std(mse_scores_rf)]
+                mse_means = [statistics.mean(mse_scores_lr), statistics.mean(mse_scores_rf)]
+                mse_stds = [statistics.stdev(mse_scores_lr), statistics.stdev(mse_scores_rf)]
                 
                 st.markdown('<hr style="border-top: 2px solid blue;">', unsafe_allow_html=True)
 
@@ -696,9 +691,9 @@ with guia1:
                             Quanto menor o MSE, melhor o modelo está ajustado aos dados. Nesse caso, o modelo de Regressão Linear tem um desempenho 
                             relativamente bom com um MSE médio abaixo de 1.''')
               
-                st.markdown(' * Desvio Padrão do MSE: 0.2008')
+                st.markdown(' * Desvio Padrão do MSE: 0.2245')
                 
-                st.markdown('''O desvio padrão do MSE é 0.2008, indicando a variabilidade dos erros nas diferentes divisões dos dados (folds). 
+                st.markdown('''O desvio padrão do MSE é 0.2245, indicando a variabilidade dos erros nas diferentes divisões dos dados (folds). 
                             Um desvio padrão mais baixo sugere que o modelo é mais consistente em diferentes partes dos dados.
                             ''')
                 
@@ -712,9 +707,9 @@ with guia1:
                             No entanto, a diferença é pequena, então o desempenho dos dois modelos é comparável.
                             ''')
               
-                st.markdown(' * Desvio Padrão do MSE: 0.1357')
+                st.markdown(' * Desvio Padrão do MSE: 0.1518')
                 
-                st.markdown('''O desvio padrão do MSE para o Random Forest é 0.1357, que é menor que o desvio padrão da Regressão Linear. 
+                st.markdown('''O desvio padrão do MSE para o Random Forest é 0.1518, que é menor que o desvio padrão da Regressão Linear. 
                             Isso sugere que o Random Forest é mais consistente do que a Regressão Linear em termos de previsibilidade em diferentes partes dos dados.
                             ''')
                 
